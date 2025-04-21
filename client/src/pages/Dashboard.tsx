@@ -10,6 +10,7 @@ import { useAnalysisState } from "@/hooks/useAnalysisState";
 import { ImpactArea, DocumentResponse, AnalysisResponse, TaskResponse } from "@/lib/types";
 import { Loader2 } from "lucide-react";
 import { Document, AnalysisResult } from "@shared/schema";
+import TaskQuickCreate from "@/components/TaskQuickCreate";
 
 const Dashboard = () => {
   const params = useParams<{ id: string }>();
@@ -106,6 +107,12 @@ const Dashboard = () => {
         onClose={() => setIsTaskDialogOpen(false)}
         documentId={documentId}
         impactArea={selectedImpactArea}
+      />
+
+      <TaskQuickCreate 
+        documentId={documentId}
+        impactAreas={impactAreas}
+        onCreateTask={handleCreateTask}
       />
     </>
   );

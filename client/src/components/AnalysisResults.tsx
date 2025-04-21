@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ImpactArea } from "@/lib/types";
-import { Filter, Printer, Eye, PlusCircle } from "lucide-react";
+import { Filter, Printer, Eye, PlusCircle, CheckSquare } from "lucide-react";
 
 interface AnalysisResultsProps {
   impactAreas: ImpactArea[];
@@ -39,6 +39,19 @@ const AnalysisResults = ({ impactAreas, onCreateTask }: AnalysisResultsProps) =>
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-medium">Impact Analysis</h2>
         <div className="flex gap-2">
+          <Button
+            variant="default"
+            size="sm"
+            className="px-4 py-1 text-sm rounded-full bg-[var(--color-primary-main)] hover:bg-[var(--color-primary-dark)]"
+            onClick={() => {
+              if (impactAreas.length > 0) {
+                onCreateTask(impactAreas[0]);
+              }
+            }}
+          >
+            <CheckSquare className="h-4 w-4 mr-2" />
+            Create New Task
+          </Button>
           <Button
             variant="outline"
             size="sm"
