@@ -7,8 +7,9 @@ import AnalysisResults from "@/components/AnalysisResults";
 import RelatedDocuments from "@/components/RelatedDocuments";
 import TaskDialog from "@/components/TaskDialog";
 import { useAnalysisState } from "@/hooks/useAnalysisState";
-import { ImpactArea } from "@/lib/types";
+import { ImpactArea, DocumentResponse, AnalysisResponse, TaskResponse } from "@/lib/types";
 import { Loader2 } from "lucide-react";
+import { Document, AnalysisResult } from "@shared/schema";
 
 const Dashboard = () => {
   const params = useParams<{ id: string }>();
@@ -18,17 +19,17 @@ const Dashboard = () => {
   const [selectedImpactArea, setSelectedImpactArea] = useState<ImpactArea | undefined>(undefined);
   const { isLoading, isAnalyzing } = useAnalysisState(documentId);
 
-  const { data: document } = useQuery({
+  const { data: document } = useQuery<any, any, Document>({
     queryKey: [`/api/documents/${documentId}`],
     enabled: !isNaN(documentId),
   });
 
-  const { data: analysisResult } = useQuery({
+  const { data: analysisResult } = useQuery<any, any, AnalysisResult>({
     queryKey: [`/api/documents/${documentId}/analysis`],
     enabled: !isNaN(documentId) && !isAnalyzing,
   });
 
-  const { data: tasks = [] } = useQuery({
+  const { data: tasks = [] } = useQuery<any, any, TaskResponse[]>({
     queryKey: [`/api/documents/${documentId}/tasks`],
     enabled: !isNaN(documentId),
   });
@@ -79,11 +80,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <div
-        className={`flex-grow p-4 overflow-auto transition-all duration-300 ease-in-out ${
-          drawerOpen ? "lg:mr-96" : ""
-        }`}
-      >
+      <div className="flex-grow p-4 overflow-auto">
         <DocumentOverview 
           document={document} 
           analysisResult={analysisResult} 
