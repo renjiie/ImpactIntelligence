@@ -6,9 +6,10 @@ import AnalysisResults from "@/components/AnalysisResults";
 import RelatedDocuments from "@/components/RelatedDocuments";
 import ChatDrawer from "@/components/ChatDrawer";
 import TaskDialog from "@/components/TaskDialog";
+import DocumentRelationshipGraph from "@/components/DocumentRelationshipGraph";
 import { useAnalysisState } from "@/hooks/useAnalysisState";
 import { ImpactArea, TaskResponse } from "@/lib/types";
-import { Loader2, AlertTriangle, BookOpen, CheckSquare } from "lucide-react";
+import { Loader2, AlertTriangle, BookOpen, CheckSquare, Network } from "lucide-react";
 import { Document, AnalysisResult } from "@shared/schema";
 import TaskQuickCreate from "@/components/TaskQuickCreate";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -97,7 +98,7 @@ const Dashboard = () => {
             onValueChange={setActiveTab}
             className="w-full"
           >
-            <TabsList className="grid grid-cols-3 w-full bg-[var(--color-grey-100)] p-1 rounded-lg">
+            <TabsList className="grid grid-cols-4 w-full bg-[var(--color-grey-100)] p-1 rounded-lg">
               <TabsTrigger 
                 value="impacts" 
                 className="flex items-center justify-center gap-2 data-[state=active]:bg-white data-[state=active]:text-[var(--color-primary-main)]"
@@ -118,6 +119,13 @@ const Dashboard = () => {
               >
                 <CheckSquare className="h-4 w-4" />
                 <span>Tasks ({tasks.length})</span>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="relationships" 
+                className="flex items-center justify-center gap-2 data-[state=active]:bg-white data-[state=active]:text-[var(--color-primary-main)]"
+              >
+                <Network className="h-4 w-4" />
+                <span>Relationships</span>
               </TabsTrigger>
             </TabsList>
             
@@ -208,6 +216,23 @@ const Dashboard = () => {
                       </div>
                     </div>
                   ))}
+                </div>
+              )}
+            </TabsContent>
+            
+            <TabsContent value="relationships" className="mt-4">
+              {relatedDocuments.length > 0 ? (
+                <DocumentRelationshipGraph 
+                  currentDocument={document}
+                  relatedDocuments={relatedDocuments}
+                />
+              ) : (
+                <div className="bg-white rounded-lg border border-[var(--color-grey-200)] p-6 text-center">
+                  <Network className="h-12 w-12 text-[var(--color-grey-400)] mx-auto mb-3" />
+                  <h3 className="text-lg font-medium mb-2">No Document Relationships Found</h3>
+                  <p className="text-[var(--color-grey-600)] mb-4">
+                    We couldn't find any related documents to visualize relationships.
+                  </p>
                 </div>
               )}
             </TabsContent>
