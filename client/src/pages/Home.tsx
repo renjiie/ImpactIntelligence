@@ -12,8 +12,7 @@ const Home = () => {
   };
   
   const handleUploadComplete = (documentId: number) => {
-    // Using the new tabular dashboard view instead of the scrolling view
-    navigate(`/dashboard-tabular/${documentId}`);
+    navigate(`/dashboard/${documentId}`);
   };
 
   return (
