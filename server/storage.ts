@@ -1,10 +1,21 @@
 import {
-  users, type User, type InsertUser,
-  documents, type Document, type InsertDocument,
-  analysisResults, type AnalysisResult, type InsertAnalysisResult,
-  tasks, type Task, type InsertTask,
-  chatMessages, type ChatMessage, type InsertChatMessage,
-  type ImpactArea, type RelatedDocument
+  users,
+  type User,
+  type InsertUser,
+  documents,
+  type Document,
+  type InsertDocument,
+  analysisResults,
+  type AnalysisResult,
+  type InsertAnalysisResult,
+  tasks,
+  type Task,
+  type InsertTask,
+  chatMessages,
+  type ChatMessage,
+  type InsertChatMessage,
+  type ImpactArea,
+  type RelatedDocument,
 } from "@shared/schema";
 
 export interface IStorage {
@@ -12,23 +23,28 @@ export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
-  
+
   // Document methods
   createDocument(document: InsertDocument): Promise<Document>;
   getDocument(id: number): Promise<Document | undefined>;
   getUserDocuments(userId: number): Promise<Document[]>;
-  
+
   // Analysis results methods
   createAnalysisResult(result: InsertAnalysisResult): Promise<AnalysisResult>;
   getAnalysisResult(id: number): Promise<AnalysisResult | undefined>;
-  getDocumentAnalysisResult(documentId: number): Promise<AnalysisResult | undefined>;
-  
+  getDocumentAnalysisResult(
+    documentId: number
+  ): Promise<AnalysisResult | undefined>;
+
   // Task methods
   createTask(task: InsertTask): Promise<Task>;
   getTask(id: number): Promise<Task | undefined>;
   getDocumentTasks(documentId: number): Promise<Task[]>;
-  updateTask(id: number, taskUpdate: Partial<InsertTask>): Promise<Task | undefined>;
-  
+  updateTask(
+    id: number,
+    taskUpdate: Partial<InsertTask>
+  ): Promise<Task | undefined>;
+
   // Chat message methods
   createChatMessage(message: InsertChatMessage): Promise<ChatMessage>;
   getDocumentChatMessages(documentId: number): Promise<ChatMessage[]>;
@@ -70,7 +86,7 @@ export class MemStorage implements IStorage {
 
   async getUserByUsername(username: string): Promise<User | undefined> {
     return Array.from(this.users.values()).find(
-      (user) => user.username === username,
+      (user) => user.username === username
     );
   }
 
@@ -85,10 +101,12 @@ export class MemStorage implements IStorage {
   async createDocument(insertDocument: InsertDocument): Promise<Document> {
     const id = this.currentIds.document++;
     const now = new Date();
-    const document: Document = { 
-      ...insertDocument, 
-      id, 
-      uploadedAt: now
+    const document: Document = {
+      ...insertDocument,
+      id,
+      uploadedAt: now,
+      description: insertDocument.description ?? null,
+      contentText: insertDocument.contentText ?? null,
     };
     this.documents.set(id, document);
     return document;
@@ -105,13 +123,15 @@ export class MemStorage implements IStorage {
   }
 
   // Analysis results methods
-  async createAnalysisResult(insertResult: InsertAnalysisResult): Promise<AnalysisResult> {
+  async createAnalysisResult(
+    insertResult: InsertAnalysisResult
+  ): Promise<AnalysisResult> {
     const id = this.currentIds.analysisResult++;
     const now = new Date();
     const result: AnalysisResult = {
       ...insertResult,
       id,
-      analysisDate: now
+      analysisDate: now,
     };
     this.analysisResults.set(id, result);
     return result;
@@ -121,7 +141,9 @@ export class MemStorage implements IStorage {
     return this.analysisResults.get(id);
   }
 
-  async getDocumentAnalysisResult(documentId: number): Promise<AnalysisResult | undefined> {
+  async getDocumentAnalysisResult(
+    documentId: number
+  ): Promise<AnalysisResult | undefined> {
     return Array.from(this.analysisResults.values()).find(
       (result) => result.documentId === documentId
     );
@@ -135,7 +157,11 @@ export class MemStorage implements IStorage {
       ...insertTask,
       id,
       status: "open",
-      createdAt: now
+      createdAt: now,
+      description: insertTask.description ?? null,
+      assignee: insertTask.assignee ?? null,
+      dueDate: insertTask.dueDate ?? null,
+      googleDriveTaskId: insertTask.googleDriveTaskId ?? null,
     };
     this.tasks.set(id, task);
     return task;
@@ -151,26 +177,32 @@ export class MemStorage implements IStorage {
     );
   }
 
-  async updateTask(id: number, taskUpdate: Partial<InsertTask>): Promise<Task | undefined> {
+  async updateTask(
+    id: number,
+    taskUpdate: Partial<InsertTask>
+  ): Promise<Task | undefined> {
     const existingTask = this.tasks.get(id);
     if (!existingTask) return undefined;
-    
+
     const updatedTask: Task = {
       ...existingTask,
-      ...taskUpdate
+      ...taskUpdate,
     };
     this.tasks.set(id, updatedTask);
     return updatedTask;
   }
 
   // Chat message methods
-  async createChatMessage(insertMessage: InsertChatMessage): Promise<ChatMessage> {
+  async createChatMessage(
+    insertMessage: InsertChatMessage
+  ): Promise<ChatMessage> {
     const id = this.currentIds.chatMessage++;
     const now = new Date();
     const message: ChatMessage = {
       ...insertMessage,
       id,
-      timestamp: now
+      timestamp: now,
+      documentId: insertMessage.documentId ?? null,
     };
     this.chatMessages.set(id, message);
     return message;

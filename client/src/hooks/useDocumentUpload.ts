@@ -26,11 +26,11 @@ export function useDocumentUpload() {
       }
 
       const result = await response.json();
-      
+
       toast({
         title: "Document uploaded successfully",
         description: "Your document is now being analyzed.",
-        variant: "success",
+        variant: "default",
       });
 
       return result.id;
@@ -38,7 +38,8 @@ export function useDocumentUpload() {
       console.error("Error uploading document:", error);
       toast({
         title: "Upload failed",
-        description: error instanceof Error ? error.message : "Failed to upload document",
+        description:
+          error instanceof Error ? error.message : "Failed to upload document",
         variant: "destructive",
       });
       throw error;

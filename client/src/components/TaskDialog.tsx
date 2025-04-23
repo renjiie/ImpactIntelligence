@@ -71,7 +71,7 @@ const TaskDialog = ({ open, onClose, documentId, impactArea }: TaskDialogProps) 
       toast({
         title: "Task created",
         description: "Task has been created successfully and saved to Google Drive.",
-        variant: "success",
+        variant: "default",
       });
       
       onClose();

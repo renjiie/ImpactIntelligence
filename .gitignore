@@ -28,15 +28,6 @@ logs
 .DS_Store
 Thumbs.db
 
-# Replit specific
-.replit
-replit.nix
-.cache/
-.config/
-.upm/
-.tmp/
-.breakpoints
-
 # Uploads folder content (but keep folder)
 uploads/*
 !uploads/.gitkeep
