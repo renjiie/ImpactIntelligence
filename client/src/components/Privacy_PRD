@@ -1,0 +1,232 @@
+PRD: Privacy Compliance and Management in AdTech
+
+1. Overview
+
+With evolving privacy regulations (GDPR, CCPA, etc.) and the deprecation of third-party cookies and device IDs, this project aims to establish a robust privacy layer in the AdTech stack to ensure compliance and maintain advertiser effectiveness.
+
+⸻
+
+2. Objectives
+	•	Ensure full compliance with global data privacy regulations.
+	•	Minimize data leakage and unauthorized user tracking.
+	•	Maintain ad delivery performance using privacy-preserving alternatives.
+	•	Enable easy audit, consent management, and data subject request (DSR) handling.
+
+⸻
+
+3. Key Features
+
+🔐 Consent Management Platform (CMP) Integration
+	•	Integrate IAB TCF 2.2-compliant CMP for web and mobile.
+	•	Capture, store, and respect user preferences per jurisdiction.
+	•	Sync consent signals across all platforms (web, app, connected TV).
+
+🧠 Contextual Targeting Module
+	•	Replace user-level behavioral targeting with page-level/contextual signals.
+	•	NLP-based content categorization for privacy-safe relevance.
+	•	Use real-time bidding (RTB) signals without user IDs.
+
+🔄 First-Party Data Framework
+	•	Enable secure ingestion of publisher/advertiser first-party data.
+	•	Support hashed emails, consent-based CRM onboarding.
+	•	Secure identity resolution using privacy-compliant clean rooms (e.g., AWS Clean Rooms, InfoSum).
+
+📉 Anonymous Attribution & Reporting
+	•	Implement multi-touch attribution without PII (e.g., differential privacy techniques).
+	•	Use SKAdNetwork (iOS) or Android Privacy Sandbox for app campaign measurement.
+	•	Aggregate event-level reporting for campaigns.
+
+🔍 Data Access & Deletion Interface
+	•	UI/API for Data Subject Requests (DSR): Access, Delete, Correct.
+	•	Logs all DSR activities with timestamps.
+	•	Integrate with internal data lake to find all instances of user data.
+
+⸻
+4. Engineering Considerations
+	•	Tech Stack: JavaScript SDKs for CMPs, server-side Go/Node.js services for consent sync, AWS S3/Lambda for DSR processing.
+	•	Storage: Use encrypted, region-compliant data stores with TTL for sensitive user identifiers.
+	•	APIs: Standardized Consent APIs (IAB, OneTrust) + internal audit logging microservices.
+	•	Security: Implement role-based access, hashing for identifiers, and endpoint monitoring.
+
+⸻
+5. KPIs
+
+Metric	Target
+Consent Collection Rate	> 90% (on compliant pages)
+DSR Response SLA	< 30 days
+% of Contextual vs. Behavioral	≥ 50% contextual ads
+Privacy Breaches	0
+⸻
+
+6. Risks & Mitigation
+Risk	Mitigation Strategy
+User opt-out rates increase	Focus on contextual relevance
+CMP integration bugs affect performance	Staging environment, QA, A/B testing
+Regulation changes	Regular legal sync + modular architecture
+
+⸻
+
+Cross-Team & Cross-Site Dependencies: Privacy Compliance in AdTech
+
+1. Purpose
+
+To outline the key team responsibilities and dependencies across the org needed to successfully build and maintain a privacy-compliant AdTech infrastructure.
+
+⸻
+
+2. Core Teams Involved
+
+🛠️ AdTech Engineering (Core)
+	•	Responsibilities:
+	•	Implement contextual targeting algorithms.
+	•	Build consent sync APIs and cookie-less ID modules.
+	•	Maintain compliance SDKs for web and mobile.
+	•	Dependencies:
+	•	Needs privacy/legal guidance on global regulation changes.
+	•	Requires CMP SDK inputs from the Privacy/Compliance team.
+
+⸻
+
+👩‍⚖️ Legal & Privacy Compliance Team
+	•	Responsibilities:
+	•	Interpret and update the org on GDPR, CCPA, CPRA, and other laws.
+	•	Approve CMP language and consent flows.
+	•	Advise on retention, storage, and data subject rights.
+	•	Dependencies:
+	•	Relies on engineering to enforce data retention and delete policies.
+	•	Works with Product to roll out user-facing controls.
+
+⸻
+
+🧩 Product Management
+	•	Responsibilities:
+	•	Define requirements and roadmap for privacy-first features.
+	•	Prioritize contextual over behavioral targeting.
+	•	Ensure data minimization without harming performance.
+	•	Dependencies:
+	•	Relies on Legal to validate compliance scope.
+	•	Relies on Engineering and Data Science to implement and test targeting tradeoffs.
+
+⸻
+
+📊 Data Platform / Analytics Team
+	•	Responsibilities:
+	•	Implement differential privacy or aggregation techniques for reports.
+	•	Ensure PII is never leaked into logs or dashboards.
+	•	Create audit logs for consent, DSR, and data access.
+	•	Dependencies:
+	•	Needs Engineering pipelines for hashed identifiers or consent flags.
+	•	Must sync with Security for encryption standards.
+
+⸻
+
+🧪 QA / Security / Compliance Auditors
+	•	Responsibilities:
+	•	Run regression and compliance test cases.
+	•	Validate secure data flows and redaction mechanisms.
+	•	Conduct third-party audits and vulnerability scans.
+	•	Dependencies:
+	•	Needs documentation from Legal and Engineering.
+	•	Works with DevOps for environment hardening and monitoring alerts.
+
+⸻
+
+🌍 Cross-Site Teams (for Global Platforms)
+	•	EU/India/APAC Engineering Pods:
+	•	Local legal team input for region-specific implementations (GDPR, DPDP, etc.).
+	•	Custom CMP experiences based on region.
+	•	Dependencies:
+	•	Share reusable modules (e.g., CMP SDK, consent popups) via a central library.
+	•	Sync with Core PMs and Legal on feature rollouts by region.
+
+⸻
+
+3. Coordination Points
+
+Milestone	Teams Involved	Mode of Sync
+CMP SDK Design	Eng, Legal, Product	Design doc + review meeting
+Consent Flow A/B Testing	Product, Eng, QA, Data Science	Weekly privacy sprint demo
+DSR Handling Flow	Eng, Legal, Security	Slack + shared Jira board
+Quarterly Privacy Audits	Legal, Security, Data Platform, Eng	Pre-scheduled audit sessions
+Global Rollout Planning	Regional Eng Pods, Core PM, Legal	Monthly cross-site sync calls
+
+Cross-Team & Cross-Site Dependencies: Privacy Compliance in AdTech
+
+1. Core Teams & Assigned Leads
+
+⸻
+
+🛠️ AdTech Engineering (Core – Bangalore)
+	•	Team Lead: Ravi Iyer
+	•	Responsibilities:
+	•	Implement contextual targeting, consent sync APIs, and identity modules.
+	•	Maintain cookie-less ad infrastructure.
+	•	Dependencies:
+	•	Legal for compliance interpretation.
+	•	Privacy team for CMP SDK updates.
+
+⸻
+
+👩‍⚖️ Legal & Privacy Compliance Team (New York)
+	•	Team Lead: Emily Chen
+	•	Responsibilities:
+	•	Interpret regulations (GDPR, CCPA, etc.).
+	•	Validate CMP flows and DSR mechanisms.
+	•	Dependencies:
+	•	Engineering for technical enforcement.
+	•	Product for aligning privacy messaging.
+
+⸻
+
+🧩 Product Management (San Francisco)
+	•	Team Lead: John Patel
+	•	Responsibilities:
+	•	Define and prioritize privacy-first ad products.
+	•	Balance targeting performance with compliance.
+	•	Dependencies:
+	•	Legal for regional scope.
+	•	Engineering and Data teams for implementation.
+
+⸻
+
+📊 Data Platform / Analytics (Toronto)
+	•	Team Lead: Sophia Nguyen
+	•	Responsibilities:
+	•	Build privacy-safe reporting pipelines.
+	•	Implement aggregation and hashing for analytics.
+	•	Dependencies:
+	•	Engineering for data tagging and logging.
+	•	Security for encryption and access rules.
+
+⸻
+
+🧪 QA / Security / Compliance (London)
+	•	Team Lead: James O’Connor
+	•	Responsibilities:
+	•	Conduct audits, compliance tests, and vulnerability scans.
+	•	Validate deletion requests and consent handling.
+	•	Dependencies:
+	•	Legal for audit standards.
+	•	DevOps and Engineering for secure data flows.
+
+⸻
+
+🌍 Cross-Site Teams
+
+Region	Team Lead	Notes
+EU Pod (Berlin)	Anna Müller	Handles GDPR-specific flows, localized CMPs
+India Pod (Hyderabad)	Praveen Reddy	Works with Ravi’s team on API localization
+APAC Pod (Singapore)	Michelle Tan	Implements PDPA compliance, local consent rules
+
+
+
+⸻
+
+2. Coordination Points
+
+Milestone	Teams Involved	Mode of Sync	Lead Coordinator
+CMP SDK Design	Eng, Legal, Product	Design doc + review	John Patel (PM)
+Consent Flow A/B Testing	Product, Eng, QA, Data	Weekly privacy sprint	Ravi Iyer (Eng)
+DSR Handling Flow	Eng, Legal, Security	Shared Jira + Slack	Emily Chen (Legal)
+Quarterly Privacy Audits	Legal, Security, Data, Eng	Pre-scheduled audit calls	James O’Connor (Sec)
+Global Rollout Planning	Regional Pods, Core PM, Legal	Monthly cross-site sync	Anna Müller (EU Lead)

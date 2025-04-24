@@ -1,0 +1,117 @@
+
+🛠️ Tech Spec: Privacy Compliance in AdTech
+
+📌 Objective
+
+To design and implement a privacy-first AdTech infrastructure that:
+	•	Adheres to regulations (GDPR, CCPA, DPDP).
+	•	Supports contextual targeting.
+	•	Enables consent-based data flows and DSR compliance.
+
+⸻
+
+🧱 System Components
+
+1. Consent Management Platform (CMP) SDK
+	•	Type: Web + Mobile SDK
+	•	Responsibilities:
+	•	Capture, store, and sync user consent.
+	•	Provide UI for accept/reject granular permissions.
+	•	Storage:
+	•	Consent data stored in hashed format.
+	•	Synced with backend using secure HTTPS endpoints.
+
+⸻
+
+2. Identity Management Layer
+	•	Type: Backend microservice
+	•	Responsibilities:
+	•	Support cookie-less identifiers (e.g., UUIDv4, Shared ID).
+	•	Link consent token with identity.
+	•	Privacy Feature:
+	•	Expiration and renewal mechanism.
+	•	No persistent ID without explicit consent.
+
+⸻
+
+3. Contextual Targeting Engine
+	•	Type: Service running in Ad Server
+	•	Responsibilities:
+	•	Analyze content of the page (keywords, tags).
+	•	Match ads using context instead of behavioral data.
+	•	Privacy:
+	•	No cross-site user tracking.
+	•	Works without third-party cookies.
+
+⸻
+
+4. DSR Handling Service (Data Subject Requests)
+	•	Type: API Layer + Worker
+	•	Responsibilities:
+	•	Accept requests: access, delete, portability.
+	•	Queue and process deletions across systems.
+	•	Security:
+	•	Auth via secure token + request validation.
+	•	Logging with audit trail.
+
+⸻
+
+5. Privacy Analytics Layer
+	•	Type: Internal analytics pipeline
+	•	Responsibilities:
+	•	Aggregate opt-in/out ratios, regional trends.
+	•	No individual user PII exposure.
+	•	Compliance:
+	•	Use k-anonymity/differential privacy where needed.
+	•	Role-based access control to dashboards.
+
+⸻
+
+🔄 Data Flow Diagram (Simplified)
+
+[ User ]
+   ↓ (UI SDK)
+[ CMP SDK ]
+   ↓
+[ Consent API ] ←→ [ Identity Service ]
+   ↓
+[ Contextual Targeting Engine ]
+   ↓
+[ Ad Delivery System ]
+
+Data Subject Request Flow:
+
+[ User Request Form ]
+   ↓
+[ DSR API ]
+   ↓
+[ Data Deletion Queue ]
+   ↓
+[ Subsystems: Logs, Ad DB, Profile DB ]
+
+
+
+⸻
+
+⚙️ Tech Stack
+
+Component	Technology
+CMP SDK	React.js (Web), Kotlin/Swift
+Consent API	Node.js / Express
+Identity Service	Go / Redis / PostgreSQL
+Targeting Engine	Python / FastAPI
+DSR Queue & Worker	Kafka + Python Worker
+Analytics Pipeline	Spark + S3 + Redshift / BigQuery
+Security & Audit	Hashicorp Vault + Datadog
+
+
+
+⸻
+
+📐 Non-Functional Requirements
+	•	Latency: CMP SDK load < 300ms
+	•	Uptime: > 99.9% for consent & DSR endpoints
+	•	Scalability: 10M DAUs supported
+	•	Security: TLS 1.3, Encrypted at Rest & Transit
+
+⸻

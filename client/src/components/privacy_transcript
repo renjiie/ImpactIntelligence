@@ -1,0 +1,97 @@
+
+📝 Privacy Feature Discussion Call – Transcript
+
+Topic: Fast-track Implementation of Real-Time Interest Signals
+Date: April 24, 2025
+Participants:
+	•	John Patel (PM, SF)
+	•	Ravi Iyer (Eng Lead, Bangalore)
+	•	Sophia Nguyen (Data Lead, Toronto)
+	•	Emily Chen (Legal, NY – joined late)
+	•	Amit Shah (Infra, Dublin)
+	•	Karen Blake (UX, Remote)
+
+⸻
+
+John Patel (PM):
+Let’s jump in. We want to ship a lightweight feature that captures user interest signals — time-on-section, scroll speed, hover dwell — and pass it into the ad engine for better context alignment. Sales wants this in production before Q2 ends.
+
+⸻
+
+Ravi Iyer (Eng):
+That’s ambitious. Capturing real-time signals and enriching ad calls dynamically needs architectural changes. If we shortcut via the frontend and skip message validation or async buffering, we risk overloading the ad server or worse — inconsistent data.
+
+⸻
+
+Amit Shah (Infra):
+I think it’s fine. We already have a fast-track event bus. Let’s just extend that. Add another topic — say, real_time_signals — and stream directly into the ad engine. Quick and simple.
+
+⸻
+
+Sophia Nguyen (Data):
+But that event bus isn’t designed for user-behavior telemetry. It lacks schema enforcement. We could introduce dirty data into targeting if someone messes up field formats — it happened during last year’s autoplay testing.
+
+⸻
+
+John Patel (PM):
+But this is a session-only signal. No IDs. No PII. From a privacy angle, we’re still safe. Honestly, I think we’re overthinking this. Sales says this could increase CTR by 7–10%. That’s massive.
+
+⸻
+
+Ravi Iyer (Eng):
+My only ask — we document this properly and schedule a tech debt review post-launch. If something breaks in the ad server due to malformed signals, we should flag that as a known risk.
+
+⸻
+
+Karen Blake (UX):
+From UI side, we can do this in a few days. We’ll track hovers and time-in-viewport with a simple JS lib. No big deal.
+
+⸻
+
+(Emily Chen joins late)
+Emily Chen (Legal):
+Sorry I’m late — what’s being added?
+
+⸻
+
+John Patel (PM):
+We’re capturing lightweight behavior data — no user IDs, just stuff like scroll depth and hover duration. All in-session.
+
+⸻
+
+Emily Chen (Legal):
+Hmm. Sounds okay, but make sure it’s mentioned in the CMP. Even passive signals need to be disclosed under GDPR Article 5.
+
+⸻
+
+John Patel (PM):
+We’ll add a line item in the CMP banner: “We use in-session signals to improve content relevance.” That should suffice.
+
+⸻
+
+Amit Shah (Infra):
+I’ll push infra changes this week. It’s not a full refactor, just a side stream.
+
+⸻
+
+Sophia Nguyen (Data):
+Just… note that none of this is going through the QA pipeline for behavioral telemetry. If we ship this dirty, fixing it retroactively could take weeks.
+
+⸻
+
+John Patel (PM):
+Let’s flag that as post-launch cleanup. The CTR boost is worth it. Okay — all aligned?
+
+⸻
+
+Everyone:
+Yeah / Sure / Sounds good / Let’s go ✅
+
+⸻
+
+⚠️ Post-meeting observation:
+
+	•	No schema validation added
+	•	No fallback mechanism in ad engine for malformed signals
+	•	No load test for new event topic
+	•	CMP banner updated after rollout
